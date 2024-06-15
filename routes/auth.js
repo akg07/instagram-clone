@@ -3,6 +3,8 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const {JWT_SECRET} = require('../keys');
 
 
 
@@ -58,7 +60,9 @@ router.post('/signin', (req, res) => {
         return res.status(422).json({message: "Invalid Email/Password."});
       }
 
-      res.status(200).json({message: "Loggedin successfully"});
+      const token = jwt.sign({ _id: savedUser._id }, JWT_SECRET);
+      res.status(200).json({message: "Loggedin successfully", token});
+
     }).catch(err => console.log(err));
 
   }).catch(err => console.log(err));
