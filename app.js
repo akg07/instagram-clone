@@ -7,8 +7,13 @@ const { MONGO_URI } = require('./keys');
 const app = express(); // invoke the express
 const PORT = 5000;
 
+app.use(express.json()); // parse all the request to json
+
 // register these model in DB
-require('./models/user')
+require('./models/user');
+
+// register the routers
+app.use(require('./routes/auth'));
 
 mongoose.connect(MONGO_URI);
 mongoose.connection.on('connected', () => {
