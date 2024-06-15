@@ -18,12 +18,14 @@ module.exports = (req, res, next) => {
 
     const {_id} = payload;
     User.findById(_id).then((userData) => {
+      userData.password = undefined;
       req.user = userData; // modify request using middleware
-    }).catch(err => console.log(err));
+      next(); // stop this middleware and continue req-res-cycle.
+    }).catch(err => {
+      console.log(err)
+      next();
+    });
 
   });
-
-  next(); // stop this middleware and continue req-res-cycle.
-
 
 }
