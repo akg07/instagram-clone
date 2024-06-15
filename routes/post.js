@@ -5,7 +5,7 @@ const Post = mongoose.model('Post');
 const requireLogin = require('../middleware/requireLogin');
 
 
-router.post('/createpost', requireLogin, (req, res) => {
+router.post('/create-post', requireLogin, (req, res) => {
   const {title, body} = req.body;
 
   if(!title || !body) {
@@ -24,6 +24,15 @@ router.post('/createpost', requireLogin, (req, res) => {
   .catch(err => {console.log(err)});
 
 });
+
+router.get('/all-post', (req, res) => {
+  Post.find()
+  .populate('postedBy', '_id name').then(posts => {
+    res.status(200).json({message: 'success', posts});
+  }).catch(err => {
+    console.log(err);
+  })
+})
 
 
 module.exports = router;
