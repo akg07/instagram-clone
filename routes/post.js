@@ -43,5 +43,30 @@ router.get('/my-posts', requireLogin, (req, res) => {
   })
 });
 
+router.put('/like', requireLogin, (req, res) => {
+  const { postId } = req.body;
+  const { _id } = req.user; // comes from requireLogin middleware -> via token
+  Post.findByIdAndUpdate(postId, {
+    $push: { likes: _id }
+  }, { new: true }).exec()
+  .then((data) => {
+    res.status(201).json({message: 'liked post', data});
+  })
+  .catch(err => console.log(err));
+});
+
+router.put('/unlike', requireLogin, (req, res) => {
+  const { postId } = req.body;
+  const { _id } = req.user; // comes from requireLogin middleware -> via token
+
+  Post.findByIdAndUpdate(postId, {
+    $pull: { likes: _id }
+  }, { new: true }).exec()
+  .then((data) => {
+    res.status(201).json({message: 'unlike post', data});
+  })
+  .catch(err => console.log(err));
+});
+
 
 module.exports = router;
