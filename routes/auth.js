@@ -75,5 +75,21 @@ router.post('/signin', (req, res) => {
 
 })
 
+router.put('/update-profile-pic', requireLogin, (req, res) => {
+  const {photo} = req.body;
+  const{ _id } = req.user;
+
+  User.findByIdAndUpdate(_id, {$set: {photo: photo }}, {new: true})
+  .exec()
+  .then(result => {
+    console.log(result);
+    res.status(200).json({message: "Profile image updated successfully.", result});
+  })
+  .catch(err => {
+    console.log('Update profile pic Error: ', err);
+    return res.status(422).json({error: 'Something went wrong.'})
+  })
+})
+
 
 module.exports = router;
