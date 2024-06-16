@@ -60,7 +60,7 @@ router.delete('/delete-post/:postId', requireLogin, (req, res) => {
       Post.deleteOne({_id: result._id})
       .exec()
       .then(resultdel => {
-        res.status(200).json({message: 'Post delete successfully'});
+        res.status(200).json({message: 'Post delete successfully', data: result});
       })
       .catch(err => console.log('Deleting ', err));
     }else {
