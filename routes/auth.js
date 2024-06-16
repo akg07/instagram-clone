@@ -65,8 +65,9 @@ router.post('/signin', (req, res) => {
       }
 
       const token = jwt.sign({ _id: savedUser._id }, JWT_SECRET);
-      const {_id, name, email} = savedUser;
-      res.status(200).json({message: "loggedin successfully", token, user: {_id, name, email}});
+      console.log({savedUser});
+      const {_id, name, email, followers, followings} = savedUser;
+      res.status(200).json({message: "loggedin successfully", token, user: {_id, name, email, followers, followings}});
 
     }).catch(err => console.log(err));
 
