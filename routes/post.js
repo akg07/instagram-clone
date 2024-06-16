@@ -86,7 +86,9 @@ router.put('/like', requireLogin, (req, res) => {
   const { _id } = req.user; // comes from requireLogin middleware -> via token
   Post.findByIdAndUpdate(postId, {
     $push: { likes: _id }
-  }, { new: true }).exec()
+  }, { new: true })
+  .populate('comments.postedBy', '_id name')
+  .exec()
   .then((data) => {
     res.status(201).json({message: 'liked post', data});
   })
@@ -99,7 +101,9 @@ router.put('/unlike', requireLogin, (req, res) => {
 
   Post.findByIdAndUpdate(postId, {
     $pull: { likes: _id }
-  }, { new: true }).exec()
+  }, { new: true })
+  .populate('comments.postedBy', '_id name')
+  .exec()
   .then((data) => {
     res.status(201).json({message: 'unlike post', data});
   })
