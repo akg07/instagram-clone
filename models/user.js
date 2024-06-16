@@ -26,7 +26,11 @@ const userSchema = new mongoose.Schema({
       type: ObjectId,
       ref: 'User'
     }
-  ]
+  ],
+  photo: {
+    type: String,
+    default: 'https://res.cloudinary.com/dfcstdai1/image/upload/v1718567138/f809utuv6rp8seqtsxfh.png'
+  },
 });
 
 mongoose.model('User', userSchema);

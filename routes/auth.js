@@ -13,7 +13,7 @@ router.get('/protected', requireLogin, (req, res) => {
 });
 
 router.post('/signup', (req, res) => {
-  const {name, email, password} = req.body;
+  const {name, email, password, photo} = req.body;
   if(!email || !password || !name) {
     return res.status(422).json({error: 'Please add all the fields.'});
   }
@@ -28,7 +28,7 @@ router.post('/signup', (req, res) => {
       bcrypt.hash(password, 12)
         .then((hashedPassword) => {
           const user = new User({
-            email, name, password: hashedPassword
+            email, name, password: hashedPassword, photo
           });
     
           user.save()
@@ -66,8 +66,8 @@ router.post('/signin', (req, res) => {
 
       const token = jwt.sign({ _id: savedUser._id }, JWT_SECRET);
       console.log({savedUser});
-      const {_id, name, email, followers, followings} = savedUser;
-      res.status(200).json({message: "loggedin successfully", token, user: {_id, name, email, followers, followings}});
+      const {_id, name, email, followers, followings, photo} = savedUser;
+      res.status(200).json({message: "loggedin successfully", token, user: {_id, name, email, followers, followings, photo}});
 
     }).catch(err => console.log(err));
 
