@@ -23,12 +23,12 @@ router.get('/user/:id', requireLogin, (req, res) => {
       })
     })
     .catch(err => {
-      console.log(err);
+      console.log('post error: ', err);
       return res.status(404).json({error: 'No post found'});
     })
   })
   .catch(err => {
-    console.log(err);
+    console.log('user error: ', err);
     return res.status(404).json({error: 'User not found!!'});
   })
 })
