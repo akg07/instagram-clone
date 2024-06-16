@@ -25,6 +25,7 @@ require('./models/post');
 // register the routers
 app.use(require('./routes/auth'));
 app.use(require('./routes/post'));
+app.use(require('./routes/user'));
 
 app.listen(PORT, () => { // run the application on PORT.
   console.log(`Server is running on ${PORT}`);
