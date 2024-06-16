@@ -50,22 +50,23 @@ router.post('/signin', (req, res) => {
   const {email, password} = req.body;
 
   if(!email || !password) {
-    return res.status(422).json({message: "Please add all fields."});
+    return res.status(422).json({error: "Please add all fields."});
   }
   
   
   User.findOne({email}).then((savedUser) => {
     if(!savedUser) {
-      return res.status(422).json({message: "Invalid Email/Password."});
+      return res.status(422).json({error: "Invalid Email/Password."});
     }
     
     bcrypt.compare(password, savedUser.password).then((matched) => {
       if(!matched) {
-        return res.status(422).json({message: "Invalid Email/Password."});
+        return res.status(422).json({error: "Invalid Email/Password."});
       }
 
       const token = jwt.sign({ _id: savedUser._id }, JWT_SECRET);
-      res.status(200).json({message: "Loggedin successfully", token});
+      const {_id, name, email} = savedUser;
+      res.status(200).json({message: "loggedin successfully", token, user: {_id, name, email}});
 
     }).catch(err => console.log(err));
 
