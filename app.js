@@ -3,6 +3,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const { MONGO_URI } = require('./config/keys');
+const cors = require('cors')
 
 const app = express(); // invoke the express
 const PORT = process.env.PORT || 5000;
@@ -15,6 +16,8 @@ mongoose.connection.on('connected', () => {
 mongoose.connection.on('error', (error) => {
   console.log(error);
 })
+
+app.use(cors());
 
 app.use(express.json()); // parse all the request to json
 
