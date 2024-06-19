@@ -8,6 +8,7 @@ const jwt = require('jsonwebtoken');
 const {JWT_SECRET} = require('../config/keys');
 const requireLogin = require('../middleware/requireLogin');
 const sendEmail = require('../service/nodemailer');
+const config = require('../config/keys');
 
 
 router.get('/protected', requireLogin, (req, res) => {
@@ -122,7 +123,7 @@ router.post('/reset-password', (req, res) => {
           subject: 'Password Reset',
           html: `
             <p>You requested for password reset</p>
-            <h5>Click in this <a href='http://localhost:3000/reset/${token}'> link </a> to reset password. </h5>
+            <h5>Click in this <a href='${config.FRONTEND_URL}/reset/${token}'> link </a> to reset password. </h5>
           `
         });
 
