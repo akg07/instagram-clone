@@ -31,6 +31,8 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: 'https://res.cloudinary.com/dfcstdai1/image/upload/v1718567138/f809utuv6rp8seqtsxfh.png'
   },
+  resetToken:  String,
+  expireToken: Date
 });
 
 mongoose.model('User', userSchema);

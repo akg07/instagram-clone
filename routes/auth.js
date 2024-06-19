@@ -3,9 +3,11 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
 const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const {JWT_SECRET} = require('../config/keys');
 const requireLogin = require('../middleware/requireLogin');
+const sendEmail = require('../service/nodemailer');
 
 
 router.get('/protected', requireLogin, (req, res) => {
@@ -33,6 +35,11 @@ router.post('/signup', (req, res) => {
     
           user.save()
             .then((user) => {
+              sendEmail({
+                to: 'ayush3032@gmail.com',
+                subject: 'Signup success',
+                html: `<h1>welcome to the instagram-clone app developed by Ayush K gupta!!!</h1>`
+              });
               res.status(201).json({message: "User created successfully.", id: user._id});
             })
             .catch(err => {
@@ -89,6 +96,40 @@ router.put('/update-profile-pic', requireLogin, (req, res) => {
     console.log('Update profile pic Error: ', err);
     return res.status(422).json({error: 'Something went wrong.'})
   })
+})
+
+router.post('/reset-password', (req, res) => {
+
+  crypto.randomBytes(32, (err, buffer) => {
+    if(err) {
+      console.log('reset password error: ', err);
+    }
+    const token = buffer.toString('hex');
+
+    const {email} = req.body;
+
+    User.findOne({email}).then((user) => {
+      if(!user) {
+        return res.status(422).json({error: "User don't exists with provided email."});
+      }
+
+      user.resetToken = token;
+      user.expireToken = Date.now() + 3600000;
+
+      user.save().then((saveToken) => {
+        sendEmail({
+          to: user.email,
+          subject: 'Password Reset',
+          html: `
+            <p>You requested for password reset</p>
+            <h5>Click in this <a href='http://localhost:3000/reset/${token}'> link </a> to reset password. </h5>
+          `
+        });
+
+        res.status(200).json({message: 'check your email inbox/spam'});
+      });
+    });
+  });
 })
 
 
