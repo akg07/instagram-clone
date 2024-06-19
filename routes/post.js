@@ -30,6 +30,7 @@ router.get('/all-post', requireLogin, (req, res) => {
   Post.find()
   .populate('postedBy', '_id name')
   .populate('comments.postedBy', '_id name')
+  .sort('-createdAt')
   .then(posts => {
     res.status(200).json({message: 'success', posts});
   }).catch(err => {
@@ -41,6 +42,7 @@ router.get('/all-followings-post', requireLogin, (req, res) => {
   Post.find({ postedBy: { $in: req.user.followings } })
   .populate('postedBy', '_id name')
   .populate('comments.postedBy', '_id name')
+  .sort('-createdAt')
   .then(posts => {
     res.status(200).json({message: 'success', posts});
   }).catch(err => {
@@ -49,7 +51,10 @@ router.get('/all-followings-post', requireLogin, (req, res) => {
 });
 
 router.get('/my-posts', requireLogin, (req, res) => {
-  Post.find({postedBy: req.user._id}).populate('postedBy', '_id name').then(posts => {
+  Post.find({postedBy: req.user._id})
+  .populate('postedBy', '_id name')
+  .sort('-createdAt')
+  .then(posts => {
     res.status(200).json({message: 'success', posts});
   }).catch(err => {
     console.log(err);
