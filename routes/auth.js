@@ -132,5 +132,33 @@ router.post('/reset-password', (req, res) => {
   });
 })
 
+router.post('/new-password', (req, res) => {
+
+  const { newpass, token } = req.body;
+  console.log({newpass});
+  console.log({token});
+
+
+  User.findOne({resetToken: token, expireToken: { $gt: Date.now() }}).then((user) => {
+    if(!user) {
+      return res.status(422).json({error: 'URL expired. Try again!!'});
+    }
+
+    bcrypt.hash(newpass, 12).then(hashedPassword => {
+      user.password = hashedPassword;
+      user.resetToken = undefined;
+      user.expireToken = undefined;
+      
+      console.log({hashedPassword});
+      console.log({user});
+
+      user.save().then((result) => {
+        console.log({result});
+        res.status(200).json({message: 'Password updated successfully'});
+      }).catch(err => console.log(err));
+    }).catch(err => console.log(err));
+  }).catch(err => console.log(err));
+})
+
 
 module.exports = router;
