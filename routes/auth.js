@@ -160,5 +160,16 @@ router.post('/new-password', (req, res) => {
   }).catch(err => console.log(err));
 })
 
+router.post('/search-users', (req, res) => {
+  const {query} = req.body;
+  let userPattern = new RegExp(`^${query}`);
+
+  User.find({email: { $regex: userPattern }})
+  .select('_id email name')
+  .then(user => {
+    res.json({user});
+  }).catch((err) => console.log('err ', err));
+})
+
 
 module.exports = router;
