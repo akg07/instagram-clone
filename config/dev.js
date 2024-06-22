@@ -3,7 +3,7 @@ module.exports = {
   JWT_SECRET: "skd654sdf3jbvsdk",
   MAIL_FROM: 'nodemailer363@gmail.com',
   MAIL_PASS: 'xgom iogi hgwq pltm',
-  FRONTEND_URL: 'https://main--sepiagram.netlify.app/'
+  FRONTEND_URL: 'http://localhost:3000',
 }
 
 /*
