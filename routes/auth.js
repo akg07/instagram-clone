@@ -39,7 +39,7 @@ router.post('/signup', (req, res) => {
               sendEmail({
                 to: 'ayush3032@gmail.com',
                 subject: 'Signup success',
-                html: `<h1>welcome to the instagram-clone app developed by Ayush K gupta!!!</h1>`
+                html: `<h1>welcome to the sepiagram-clone app developed by Ayush K gupta!!!</h1>`
               });
               res.status(201).json({message: "User created successfully.", id: user._id});
             })

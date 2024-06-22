@@ -16,7 +16,7 @@ const transporter = nodemailer.createTransport({
 const sendEmail = (payload) => {
   console.log(payload);
   const mailOptions = {
-    from: 'no-reply@instagramclone.com',
+    from: 'no-reply@Sepiagram.com',
     to: payload.to,
     subject: payload.subject,
     html: payload.html
