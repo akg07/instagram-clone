@@ -37,7 +37,7 @@ router.post('/signup', (req, res) => {
           user.save()
             .then((user) => {
               sendEmail({
-                to: 'ayush3032@gmail.com',
+                to: user.email,
                 subject: 'Signup success',
                 html: `<h1>welcome to the sepiagram-clone app developed by Ayush K gupta!!!</h1>`
               });
